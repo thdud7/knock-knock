@@ -1,18 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 
-// [중요!] 여기에 실제 Slack 채널 초대 링크를 붙여넣으세요.
 const SLACK_CHANNEL_URL = 'https://test-xo22685.slack.com/archives/C09FMCM4E85';
 
-// [중요!] 여기에 1초 뒤에 재생할 음성 파일 경로를 입력하세요.
-const AUDIO_FILE_URL = '/images/noot.mp3'; // '/images/' 폴더가 아닌 '/sounds/' 폴더로 경로 수정
+const AUDIO_FILE_URL = '/images/noot.mp3'; 
 
 function App() {
   const [buttonText, setButtonText] = useState('Slack 채널 참여하기 🚀');
 
-  // audio 요소를 직접 제어하기 위한 ref(리모컨) 생성
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // useEffect: 컴포넌트가 처음 화면에 렌더링될 때 딱 한 번만 실행됩니다.
   useEffect(() => {
     const timer = setTimeout(() => {
       if (audioRef.current) {
@@ -64,7 +60,6 @@ function App() {
         </footer>
       </div>
 
-      {/* 화면에 보이지 않는 오디오 플레이어를 반드시 추가해야 합니다! */}
       <audio ref={audioRef} src={AUDIO_FILE_URL} preload="auto" />
 
       <p className="text-slate-400 mt-8 text-sm">
