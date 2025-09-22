@@ -1,8 +1,5 @@
 import { useState } from 'react';
 
-// --- 타입 정의 ---
-
-// API로 보낼 데이터의 타입을 백엔드(Lambda)와 일치시킵니다.
 interface PhrasePayload {
   expression: {
     jp: string;
@@ -11,20 +8,15 @@ interface PhrasePayload {
   pronunciation: string;
 }
 
-// AI 서비스로부터 받을 응답의 타입을 정의합니다.
 interface AiResponse {
   japaneseTranslation: string;
   koreanPronunciation: string;
 }
 
-// --- API 호출 함수들 ---
-
-// API Gateway 엔드포인트 URL (실제 URL로 교체해야 합니다)
 const API_ENDPOINT = 'https://4ysc0zq1b5.execute-api.ap-northeast-2.amazonaws.com/default/knockknock-api';
 
 /**
- * AI 백엔드를 호출하여 번역과 발음을 생성하는 함수
- * @param koreanPhrase - 번역할 한국어 원본 텍스트
+ * @param koreanPhrase 
  */
 const fetchAiSuggestions = async (koreanPhrase: string): Promise<AiResponse> => {
   console.log(`[AI 호출 시작] 입력: "${koreanPhrase}"`);
@@ -46,8 +38,7 @@ const fetchAiSuggestions = async (koreanPhrase: string): Promise<AiResponse> => 
 };
 
 /**
- * 최종 데이터를 DB에 저장하는 함수
- * @param data - 저장할 최종 데이터 객체
+ * @param data 
  */
 const savePhraseToDB = async (data: PhrasePayload): Promise<any> => {
   console.log('[DB 저장 시작] 데이터:', data);
@@ -69,7 +60,6 @@ const savePhraseToDB = async (data: PhrasePayload): Promise<any> => {
 };
 
 
-// --- 메인 앱 컴포넌트 ---
 
 function App() {
   const [koreanInput, setKoreanInput] = useState('');
