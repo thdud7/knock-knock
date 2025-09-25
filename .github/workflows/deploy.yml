@@ -22,10 +22,10 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: knock-knock-user 빌드
-        run: cd knock-user && npm install && npm run build
+        run: cd knock-knock-user && npm install && npm run build
 
       - name: user 프로젝트 S3에 배포하기
-        run: aws s3 sync ./knock-user/dist s3://${{ secrets.S3_BUCKET_USER }} --delete
+        run: aws s3 sync ./knock-knock-user/dist s3://${{ secrets.S3_BUCKET_USER }} --delete
 
       - name: user 프로젝트 CloudFront 캐시 무효화
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID_USER }} --paths "/*"
@@ -45,10 +45,10 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: knock-knock-manage 빌드
-        run: cd knock-manage && npm install && npm run build
+        run: cd knock-knock-manage && npm install && npm run build
 
       - name: manage 프로젝트 S3에 배포하기
-        run: aws s3 sync ./knock-manage/dist s3://${{ secrets.S3_BUCKET_MANAGE }} --delete
+        run: aws s3 sync ./knock-knock-manage/dist s3://${{ secrets.S3_BUCKET_MANAGE }} --delete
 
       - name: manage 프로젝트 CloudFront 캐시 무효화
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID_MANAGE }} --paths "/*"
