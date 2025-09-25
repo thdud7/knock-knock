@@ -13,11 +13,10 @@ interface AiResponse {
   koreanPronunciation: string;
 }
 
+
 const API_ENDPOINT = 'https://4ysc0zq1b5.execute-api.ap-northeast-2.amazonaws.com/default/knockknock-api';
 
-/**
- * @param koreanPhrase 
- */
+
 const fetchAiSuggestions = async (koreanPhrase: string): Promise<AiResponse> => {
   console.log(`[AI 호출 시작] 입력: "${koreanPhrase}"`);
   
@@ -37,9 +36,6 @@ const fetchAiSuggestions = async (koreanPhrase: string): Promise<AiResponse> => 
   return data;
 };
 
-/**
- * @param data 
- */
 const savePhraseToDB = async (data: PhrasePayload): Promise<any> => {
   console.log('[DB 저장 시작] 데이터:', data);
 
@@ -106,7 +102,6 @@ function App() {
         pronunciation: pronunciation,
       });
       setStatus({ type: 'success', message: '데이터가 성공적으로 DB에 저장되었습니다!' });
-      // 저장 후 폼 초기화
       setKoreanInput('');
       setJapaneseOutput('');
       setPronunciation('');

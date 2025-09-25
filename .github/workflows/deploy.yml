@@ -1,0 +1,54 @@
+# .github/workflows/deploy.yml
+
+name: S3와 CloudFront에 배포하기
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-user:
+    runs-on: ubuntu-latest 
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: AWS 인증 정보 구성
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: knock-user 빌드
+        run: cd knock-user && npm install && npm run build
+
+      - name: user 프로젝트 S3에 배포하기
+        run: aws s3 sync ./knock-user/dist s3://${{ secrets.S3_BUCKET_USER }} --delete
+
+      - name: user 프로젝트 CloudFront 캐시 무효화
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID_USER }} --paths "/*"
+
+  # 'knock-manage' 프로젝트 배포 작업
+  deploy-manage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: AWS 인증 정보 구성
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: knock-manage 빌드
+        run: cd knock-manage && npm install && npm run build
+
+      - name: manage 프로젝트 S3에 배포하기
+        run: aws s3 sync ./knock-manage/dist s3://${{ secrets.S3_BUCKET_MANAGE }} --delete
+
+      - name: manage 프로젝트 CloudFront 캐시 무효화
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_DISTRIBUTION_ID_MANAGE }} --paths "/*"

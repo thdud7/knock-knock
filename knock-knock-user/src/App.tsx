@@ -60,6 +60,7 @@ function App() {
         </footer>
       </div>
 
+      {}
       <audio ref={audioRef} src={AUDIO_FILE_URL} preload="auto" />
 
       <p className="text-slate-400 mt-8 text-sm">
